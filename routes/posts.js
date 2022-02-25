@@ -1,5 +1,4 @@
 const express = require("express")
-const { findById } = require("../models/Post")
 const router = express.Router()
 const Post = require("../models/Post")
 
@@ -14,25 +13,25 @@ router.post("/", (req, res) => {
   return res.json({ msg: "Post added succesfully", post })
 })
 
-router.get("/title", async (req, res) => {
-  try {
-    const title = req.body.title
-    console.log(title)
-    const post = await Post.findOne({ title: title })
-    return res.status(200).json({ msg: "Post found", post })
-  } catch (e) {
-    return res.status(400).json({ msg: "Could not find that one" })
-  }
-})
+// router.get("/title", async (req, res) => {
+//   try {
+//     const title = req.body.title
+//     console.log(title)
+//     const post = await Post.findOne({ title: title })
+//     return res.status(200).json({ msg: "Post found", post })
+//   } catch (e) {
+//     return res.status(400).json({ msg: "Could not find that one" })
+//   }
+// })
 
-router.get("/:id", async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id)
-    return res.status(200).json(post)
-  } catch (e) {
-    return res.status(400).json({ msg: "Could not get by ID", e })
-  }
-})
+// router.get("/:id", async (req, res) => {
+//   try {
+//     const post = await Post.findById(req.params.id)
+//     return res.status(200).json(post)
+//   } catch (e) {
+//     return res.status(400).json({ msg: "Could not get by ID", e })
+//   }
+// })
 
 router.get("/", async (req, res) => {
   try {
@@ -57,7 +56,7 @@ router.put("/:id", async (req, res) => {
     const id = req.params.id
     const { title, description } = req.body
     const post = await Post.findByIdAndUpdate(id)
-    if (post) {
+    if (post && title !== "") {
       post.title = title
       post.description = description
       post.save()
